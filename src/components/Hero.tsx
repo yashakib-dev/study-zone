@@ -23,7 +23,7 @@ export default function Hero() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
               <Link
-                href="/register"
+                href="/login"
                 className="rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-indigo-900/30 hover:from-indigo-500 hover:to-indigo-400 hover:shadow-indigo-500/20 active:scale-98 transition-all duration-150 text-center"
               >
                 Get Started Free
