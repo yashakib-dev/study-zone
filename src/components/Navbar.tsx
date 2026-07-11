@@ -8,6 +8,7 @@ export default function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const pathname = usePathname();
 
+
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
   const closeDrawer = () => setIsDrawerOpen(false);
 
@@ -51,12 +52,18 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
             <Link
               href="/login"
-              className="rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-indigo-900/30 hover:from-indigo-500 hover:to-indigo-400 hover:shadow-indigo-500/20 active:scale-95 transition-all duration-150 text-center"
+              className="rounded-lg border border-slate-800 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-900/60 hover:border-slate-700 active:scale-95 transition-all duration-150 text-center"
             >
               Login
+            </Link>
+            <Link
+              href="/register"
+              className="rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-indigo-900/30 hover:from-indigo-500 hover:to-indigo-400 hover:shadow-indigo-500/20 active:scale-95 transition-all duration-150 text-center"
+            >
+              Register
             </Link>
           </div>
 
@@ -152,13 +159,20 @@ export default function Navbar() {
           </nav>
         </div>
 
-        <div className="border-t border-slate-900 pt-6">
+        <div className="border-t border-slate-900 pt-6 flex flex-col gap-3">
           <Link
             href="/login"
             onClick={closeDrawer}
-            className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-950/40 hover:from-indigo-500 hover:to-indigo-400 active:scale-[0.98] transition-all text-center animate-pulse"
+            className="w-full rounded-xl border border-slate-800 bg-slate-900/40 py-3 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-900/60 active:scale-[0.98] transition-all text-center"
           >
             Login
+          </Link>
+          <Link
+            href="/register"
+            onClick={closeDrawer}
+            className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-950/40 hover:from-indigo-500 hover:to-indigo-400 active:scale-[0.98] transition-all text-center"
+          >
+            Register
           </Link>
         </div>
       </div>
