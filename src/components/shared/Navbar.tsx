@@ -2,12 +2,30 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { authClient } from '@/lib/auth-client';
+import toast from 'react-hot-toast';
 
 export default function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  const firstName = user?.name ? user.name.split(' ')[0] : '';
+
+  const handleLogout = async () => {
+    try {
+      await authClient.signOut();
+      toast.success('Logged out successfully');
+      router.push('/');
+      router.refresh();
+      closeDrawer();
+    } catch {
+      toast.error('Failed to log out');
+    }
+  };
 
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
   const closeDrawer = () => setIsDrawerOpen(false);
@@ -52,20 +70,48 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/login"
-              className="rounded-lg border border-slate-800 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-900/60 hover:border-slate-700 active:scale-95 transition-all duration-150 text-center"
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-indigo-900/30 hover:from-indigo-500 hover:to-indigo-400 hover:shadow-indigo-500/20 active:scale-95 transition-all duration-150 text-center"
-            >
-              Register
-            </Link>
-          </div>
+          {user ? (
+            <div className="hidden md:flex items-center gap-4">
+              <div className="flex items-center gap-2 bg-slate-900/40 border border-slate-800/80 rounded-xl px-3 py-1.5">
+                {user.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={user.image}
+                    alt={user.name}
+                    className="h-7 w-7 rounded-full object-cover border border-cyan-500/30"
+                  />
+                ) : (
+                  <div className="h-7 w-7 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-xs font-semibold text-white">
+                    {user.name ? user.name[0].toUpperCase() : 'U'}
+                  </div>
+                )}
+                <span className="text-sm font-medium text-slate-200">
+                  Hi, {firstName}
+                </span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="rounded-lg border border-slate-800 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 hover:border-rose-500/20 active:scale-95 transition-all duration-150 text-center cursor-pointer"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center gap-3">
+              <Link
+                href="/login"
+                className="rounded-lg border border-slate-800 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-900/60 hover:border-slate-700 active:scale-95 transition-all duration-150 text-center"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-indigo-900/30 hover:from-indigo-500 hover:to-indigo-400 hover:shadow-indigo-500/20 active:scale-95 transition-all duration-150 text-center"
+              >
+                Register
+              </Link>
+            </div>
+          )}
 
           <button
             onClick={toggleDrawer}
@@ -160,20 +206,51 @@ export default function Navbar() {
         </div>
 
         <div className="border-t border-slate-900 pt-6 flex flex-col gap-3">
-          <Link
-            href="/login"
-            onClick={closeDrawer}
-            className="w-full rounded-xl border border-slate-800 bg-slate-900/40 py-3 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-900/60 active:scale-[0.98] transition-all text-center"
-          >
-            Login
-          </Link>
-          <Link
-            href="/register"
-            onClick={closeDrawer}
-            className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-950/40 hover:from-indigo-500 hover:to-indigo-400 active:scale-[0.98] transition-all text-center"
-          >
-            Register
-          </Link>
+          {user ? (
+            <>
+              <div className="flex items-center gap-3 bg-slate-900/40 border border-slate-800/80 rounded-xl p-3 mb-2">
+                {user.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={user.image}
+                    alt={user.name}
+                    className="h-9 w-9 rounded-full object-cover border border-cyan-500/30"
+                  />
+                ) : (
+                  <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-sm font-semibold text-white">
+                    {user.name ? user.name[0].toUpperCase() : 'U'}
+                  </div>
+                )}
+                <div>
+                  <p className="text-xs text-slate-400">Logged in as</p>
+                  <p className="text-sm font-semibold text-slate-200">{user.name}</p>
+                </div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full rounded-xl border border-slate-800 bg-slate-900/40 py-3 text-sm font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 active:scale-[0.98] transition-all text-center cursor-pointer"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                onClick={closeDrawer}
+                className="w-full rounded-xl border border-slate-800 bg-slate-900/40 py-3 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-900/60 active:scale-[0.98] transition-all text-center"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                onClick={closeDrawer}
+                className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-950/40 hover:from-indigo-500 hover:to-indigo-400 active:scale-[0.98] transition-all text-center"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </>

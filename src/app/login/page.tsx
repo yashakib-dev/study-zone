@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { authClient } from '@/lib/auth-client';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface FormErrors {
   email?: string;
@@ -9,12 +12,12 @@ interface FormErrors {
 }
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
@@ -30,14 +33,33 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
     setIsSubmitting(true);
-    setTimeout(() => {
+
+    try {
+      const { data: res, error } = await authClient.signIn.email({
+        email,
+        password,
+      });
+
+      if (error) {
+        toast.error(error.message ?? 'Invalid email or password.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (res) {
+        toast.success('Logged in successfully!');
+        router.push('/');
+        router.refresh();
+      }
+    } catch {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      setSuccess(true);
-    }, 1500);
+    }
   };
 
   const handleDemoLogin = () => {
@@ -66,21 +88,7 @@ export default function LoginPage() {
         {/* Card */}
         <div className="rounded-2xl border border-slate-800 bg-slate-900/20 p-8 backdrop-blur-sm">
           
-          {success ? (
-            <div className="text-center py-6">
-              <div className="mb-4 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/10 border border-indigo-500/30">
-                <svg className="h-7 w-7 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h2 className="text-lg font-bold text-white mb-2">Login Successful!</h2>
-              <p className="text-sm text-slate-400 mb-6">Redirecting you to your dashboard...</p>
-              <Link href="/dashboard" className="rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-6 py-3 text-sm font-semibold text-white hover:from-indigo-500 hover:to-indigo-400 transition-all">
-                Go to Dashboard
-              </Link>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
 
               {/* Email */}
               <div>
@@ -187,16 +195,13 @@ export default function LoginPage() {
                 Use Demo Account
               </button>
 
-              {/* Register redirect */}
               <p className="text-center text-xs text-slate-500 mt-1">
                 Don&apos;t have an account?{' '}
                 <Link href="/register" className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">
                   Create one
                 </Link>
               </p>
-
             </form>
-          )}
         </div>
 
       </div>

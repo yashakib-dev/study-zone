@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { authClient } from '@/lib/auth-client';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
   fullName: string;
@@ -17,6 +20,7 @@ interface FormErrors {
 }
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [form, setForm] = useState<FormData>({
     fullName: '',
     email: '',
@@ -26,7 +30,6 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
@@ -53,14 +56,35 @@ export default function RegisterPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
     setIsSubmitting(true);
-    setTimeout(() => {
+
+    try {
+      const { data: res, error } = await authClient.signUp.email({
+        name: form.fullName,
+        email: form.email,
+        password: form.password,
+        image: form.photoUrl || '',
+      });
+
+      if (error) {
+        toast.error(error.message ?? 'Registration failed.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (res) {
+        toast.success('Registration successful!');
+        router.push('/');
+        router.refresh();
+      }
+    } catch {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      setSuccess(true);
-    }, 1500);
+    }
   };
 
   const passwordStrength = (): { label: string; color: string; width: string } => {
@@ -76,13 +100,13 @@ export default function RegisterPage() {
 
   return (
     <div className="flex-1 bg-slate-950 flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8 relative overflow-hidden">
-      
+
       {/* Ambient glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-md">
-        
+
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-extrabold text-white">Create your account</h1>
@@ -93,22 +117,8 @@ export default function RegisterPage() {
 
         {/* Card */}
         <div className="rounded-2xl border border-slate-800 bg-slate-900/20 p-8 backdrop-blur-sm">
-          
-          {success ? (
-            <div className="text-center py-6">
-              <div className="mb-4 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/10 border border-indigo-500/30">
-                <svg className="h-7 w-7 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h2 className="text-lg font-bold text-white mb-2">Account Created!</h2>
-              <p className="text-sm text-slate-400 mb-6">Welcome to StudyZone. You can now log in to your account.</p>
-              <Link href="/login" className="rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-6 py-3 text-sm font-semibold text-white hover:from-indigo-500 hover:to-indigo-400 transition-all">
-                Go to Login
-              </Link>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
 
               {/* Full Name */}
               <div>
@@ -123,11 +133,10 @@ export default function RegisterPage() {
                   value={form.fullName}
                   onChange={handleChange}
                   placeholder="e.g. Sarah Chen"
-                  className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${
-                    errors.fullName
+                  className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${errors.fullName
                       ? 'border-rose-500/60 focus:border-rose-500 focus:ring-rose-500/30'
                       : 'border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/30'
-                  }`}
+                    }`}
                 />
                 {errors.fullName && (
                   <p className="mt-1.5 text-xs text-rose-400">{errors.fullName}</p>
@@ -147,11 +156,10 @@ export default function RegisterPage() {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="e.g. sarah@university.edu"
-                  className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${
-                    errors.email
+                  className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${errors.email
                       ? 'border-rose-500/60 focus:border-rose-500 focus:ring-rose-500/30'
                       : 'border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/30'
-                  }`}
+                    }`}
                 />
                 {errors.email && (
                   <p className="mt-1.5 text-xs text-rose-400">{errors.email}</p>
@@ -172,11 +180,10 @@ export default function RegisterPage() {
                     value={form.password}
                     onChange={handleChange}
                     placeholder="Min. 8 characters"
-                    className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 pr-11 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${
-                      errors.password
+                    className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 pr-11 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${errors.password
                         ? 'border-rose-500/60 focus:border-rose-500 focus:ring-rose-500/30'
                         : 'border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/30'
-                    }`}
+                      }`}
                   />
                   <button
                     type="button"
@@ -228,12 +235,6 @@ export default function RegisterPage() {
                 />
               </div>
 
-              {/* Forgot Password link */}
-              <div className="text-right -mt-2">
-                <Link href="/register" className="text-xs text-slate-500 hover:text-indigo-400 transition-colors">
-                  Forgot password?
-                </Link>
-              </div>
 
               {/* Submit */}
               <button
@@ -244,16 +245,13 @@ export default function RegisterPage() {
                 {isSubmitting ? 'Creating account...' : 'Create Account'}
               </button>
 
-              {/* Login redirect */}
               <p className="text-center text-xs text-slate-500 mt-1">
                 Already have an account?{' '}
                 <Link href="/login" className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">
                   Log in
                 </Link>
               </p>
-
             </form>
-          )}
         </div>
 
       </div>
