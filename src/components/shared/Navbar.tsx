@@ -59,7 +59,7 @@ export default function Navbar() {
             <Link href="/explore" className={pathname === '/explore' ? activeLinkClass : inactiveLinkClass}>
               Explore
             </Link>
-            <Link href="/dashboard" className={pathname === '/dashboard' ? activeLinkClass : inactiveLinkClass}>
+            <Link href="/dashboard/user" className={pathname === '/dashboard' ? activeLinkClass : inactiveLinkClass}>
               Dashboard
             </Link>
             <Link href="/about" className={pathname === '/about' ? activeLinkClass : inactiveLinkClass}>
