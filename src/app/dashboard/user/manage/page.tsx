@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 interface Resource {
   _id: string;
@@ -34,6 +35,7 @@ export default function ManageResourcesPage() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<Resource>>({});
   const [search, setSearch] = useState("");
@@ -60,10 +62,21 @@ export default function ManageResourcesPage() {
   }, [fetchResources]);
 
   async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to delete this resource?")) return;
     setDeleting(id);
     try {
-      const res = await fetch(`${baseUrl}/api/resources/${id}`, { method: "DELETE" });
+      const { data, error } = await authClient.token();
+      if (error || !data?.token) {
+        toast.error("You must be logged in to delete a resource.");
+        setDeleting(null);
+        return;
+      }
+
+      const res = await fetch(`${baseUrl}/api/resources/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${data.token}`,
+        },
+      });
       if (!res.ok) throw new Error();
       toast.success("Resource deleted.");
       setResources((prev) => prev.filter((r) => r._id !== id));
@@ -71,6 +84,7 @@ export default function ManageResourcesPage() {
       toast.error("Failed to delete resource.");
     } finally {
       setDeleting(null);
+      setDeleteConfirmId(null);
     }
   }
 
@@ -87,9 +101,18 @@ export default function ManageResourcesPage() {
   async function handleSaveEdit() {
     if (!editingId) return;
     try {
+      const { data, error } = await authClient.token();
+      if (error || !data?.token) {
+        toast.error("You must be logged in to update a resource.");
+        return;
+      }
+
       const res = await fetch(`${baseUrl}/api/resources/${editingId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${data.token}`,
+        },
         body: JSON.stringify(editForm),
       });
       if (!res.ok) throw new Error();
@@ -162,82 +185,110 @@ export default function ManageResourcesPage() {
                 </td>
               </tr>
             ) : (
-              filtered.map((resource) =>
-                editingId === resource._id ? (
-                  <tr key={resource._id} className="border-b border-slate-800/60 bg-indigo-500/5">
-                    <td className="px-4 py-3 space-y-2" colSpan={4}>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-[10px] text-slate-500 mb-1">Title</label>
-                          <input value={editForm.title || ""} onChange={(e) => setEditForm((p) => ({ ...p, title: e.target.value }))} className={inputClass} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] text-slate-500 mb-1">Author</label>
-                          <input value={editForm.author || ""} onChange={(e) => setEditForm((p) => ({ ...p, author: e.target.value }))} className={inputClass} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] text-slate-500 mb-1">Category</label>
-                          <input value={editForm.category || ""} onChange={(e) => setEditForm((p) => ({ ...p, category: e.target.value }))} className={inputClass} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] text-slate-500 mb-1">Subject</label>
-                          <input value={editForm.subject || ""} onChange={(e) => setEditForm((p) => ({ ...p, subject: e.target.value }))} className={inputClass} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] text-slate-500 mb-1">Semester</label>
-                          <input value={editForm.semester || ""} onChange={(e) => setEditForm((p) => ({ ...p, semester: e.target.value }))} className={inputClass} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] text-slate-500 mb-1">Thumbnail URL</label>
-                          <input value={editForm.thumbnail || ""} onChange={(e) => setEditForm((p) => ({ ...p, thumbnail: e.target.value }))} className={inputClass} />
-                        </div>
-                        <div className="sm:col-span-2">
-                          <label className="block text-[10px] text-slate-500 mb-1">Short Description</label>
-                          <input value={editForm.shortDescription || ""} onChange={(e) => setEditForm((p) => ({ ...p, shortDescription: e.target.value }))} className={inputClass} />
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 pt-1">
-                        <button onClick={handleSaveEdit} className="rounded-lg bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500 transition">Save</button>
-                        <button onClick={cancelEdit} className="rounded-lg border border-slate-700 px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition">Cancel</button>
-                      </div>
-                    </td>
-                  </tr>
-                ) : (
-                  <tr key={resource._id} className="border-b border-slate-800/40 hover:bg-slate-800/20 transition-colors">
-                    <td className="px-5 py-4">
-                      <p className="font-medium text-white line-clamp-1">{resource.title}</p>
-                      <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{resource.shortDescription}</p>
-                    </td>
-                    <td className="px-5 py-4 hidden sm:table-cell">
-                      <span className="rounded-full border border-slate-700 px-2.5 py-0.5 text-[11px] text-slate-400">
-                        {resource.category || "—"}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 hidden md:table-cell text-slate-400 text-xs">{resource.author || "—"}</td>
-                    <td className="px-5 py-4">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => startEdit(resource)}
-                          className="rounded-lg border border-slate-700 bg-slate-800/50 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-700 transition"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(resource._id)}
-                          disabled={deleting === resource._id}
-                          className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/20 disabled:opacity-50 transition"
-                        >
-                          {deleting === resource._id ? "..." : "Delete"}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                )
-              )
+              filtered.map((resource) => (
+                <tr key={resource._id} className="border-b border-slate-800/40 hover:bg-slate-800/20 transition-colors">
+                  <td className="px-5 py-4">
+                    <p className="font-medium text-white line-clamp-1">{resource.title}</p>
+                    <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{resource.shortDescription}</p>
+                  </td>
+                  <td className="px-5 py-4 hidden sm:table-cell">
+                    <span className="rounded-full border border-slate-700 px-2.5 py-0.5 text-[11px] text-slate-400">
+                      {resource.category || "—"}
+                    </span>
+                  </td>
+                  <td className="px-5 py-4 hidden md:table-cell text-slate-400 text-xs">{resource.author || "—"}</td>
+                  <td className="px-5 py-4">
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => startEdit(resource)}
+                        className="rounded-lg border border-slate-700 bg-slate-800/50 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-700 transition"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => setDeleteConfirmId(resource._id)}
+                        disabled={deleting === resource._id}
+                        className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-400 hover:bg-red-500/20 disabled:opacity-50 transition"
+                      >
+                        {deleting === resource._id ? "..." : "Delete"}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
             )}
           </tbody>
         </table>
       </div>
+
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+            <h3 className="text-lg font-bold text-white mb-2">Delete Resource</h3>
+            <p className="text-sm text-slate-400 mb-6">
+              Are you sure you want to delete this resource? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setDeleteConfirmId(null)}
+                disabled={deleting === deleteConfirmId}
+                className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDelete(deleteConfirmId)}
+                disabled={deleting === deleteConfirmId}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-500 rounded-xl transition disabled:opacity-50"
+              >
+                {deleting === deleteConfirmId ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {editingId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-bold text-white mb-4">Edit Resource</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Title</label>
+                <input value={editForm.title || ""} onChange={(e) => setEditForm((p) => ({ ...p, title: e.target.value }))} className={inputClass} />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Author</label>
+                <input value={editForm.author || ""} onChange={(e) => setEditForm((p) => ({ ...p, author: e.target.value }))} className={inputClass} />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Category</label>
+                <input value={editForm.category || ""} onChange={(e) => setEditForm((p) => ({ ...p, category: e.target.value }))} className={inputClass} />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Subject</label>
+                <input value={editForm.subject || ""} onChange={(e) => setEditForm((p) => ({ ...p, subject: e.target.value }))} className={inputClass} />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Semester</label>
+                <input value={editForm.semester || ""} onChange={(e) => setEditForm((p) => ({ ...p, semester: e.target.value }))} className={inputClass} />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Thumbnail URL</label>
+                <input value={editForm.thumbnail || ""} onChange={(e) => setEditForm((p) => ({ ...p, thumbnail: e.target.value }))} className={inputClass} />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-medium text-slate-400 mb-1.5">Short Description</label>
+                <input value={editForm.shortDescription || ""} onChange={(e) => setEditForm((p) => ({ ...p, shortDescription: e.target.value }))} className={inputClass} />
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
+              <button onClick={cancelEdit} className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition">Cancel</button>
+              <button onClick={handleSaveEdit} className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

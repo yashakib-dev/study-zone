@@ -4,6 +4,8 @@ import React, { useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
+
+
 interface Resource {
   _id: string;
   title: string;
@@ -32,7 +34,7 @@ export default function ResourceDetailsPage({ params }: PageProps) {
   const [related, setRelated] = useState<Resource[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeImage, setActiveImage] = useState<string>('');
-  
+
   const [reviewer, setReviewer] = useState('');
   const [stars, setStars] = useState(5);
   const [comment, setComment] = useState('');
@@ -122,10 +124,10 @@ export default function ResourceDetailsPage({ params }: PageProps) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
+
             <div className="lg:col-span-2 flex flex-col gap-8">
               <div className="bg-slate-900/10 border border-slate-800/80 rounded-2xl p-4 h-[380px] w-full" />
-              
+
               <div className="bg-slate-900/10 border border-slate-800/80 rounded-2xl p-6 flex flex-col gap-4">
                 <div className="h-6 bg-slate-800/60 rounded w-28 mb-2" />
                 <div className="h-4 bg-slate-800/60 rounded w-full" />
@@ -186,7 +188,7 @@ export default function ResourceDetailsPage({ params }: PageProps) {
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        
+
         <div className="mb-6">
           <Link href="/explore" className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-cyan-400 transition-colors">
             <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -214,9 +216,9 @@ export default function ResourceDetailsPage({ params }: PageProps) {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           <div className="lg:col-span-2 flex flex-col gap-8">
-            
+
             {mediaGallery.length > 0 && (
               <section className="bg-slate-900/20 border border-slate-800/80 rounded-2xl p-4 backdrop-blur-sm">
                 <div className="relative w-full h-[320px] sm:h-[400px] overflow-hidden rounded-xl bg-slate-950 border border-slate-900">
@@ -233,9 +235,8 @@ export default function ResourceDetailsPage({ params }: PageProps) {
                       <button
                         key={i}
                         onClick={() => setActiveImage(imgUrl)}
-                        className={`h-16 w-20 rounded-lg overflow-hidden border-2 bg-slate-950 transition-all shrink-0 cursor-pointer ${
-                          activeImage === imgUrl ? 'border-cyan-400 scale-[1.03]' : 'border-slate-800 hover:border-slate-700'
-                        }`}
+                        className={`h-16 w-20 rounded-lg overflow-hidden border-2 bg-slate-950 transition-all shrink-0 cursor-pointer ${activeImage === imgUrl ? 'border-cyan-400 scale-[1.03]' : 'border-slate-800 hover:border-slate-700'
+                          }`}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={imgUrl} alt={`Gallery image ${i}`} className="w-full h-full object-cover" />
@@ -334,7 +335,7 @@ export default function ResourceDetailsPage({ params }: PageProps) {
           </div>
 
           <div className="flex flex-col gap-8">
-            
+
             <section className="bg-slate-900/20 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-sm">
               <h2 className="text-lg font-bold text-white mb-4 border-b border-slate-800 pb-2">
                 Key Information

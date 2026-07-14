@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 const CATEGORIES = ["Notes", "Slides", "Book", "Video", "Assignment", "Other"];
 const SEMESTERS = [
@@ -41,9 +42,19 @@ export default function AddResourcePage() {
     }
     setSubmitting(true);
     try {
+      const { data, error } = await authClient.token();
+      if (error || !data?.token) {
+        toast.error("You must be logged in to publish a resource.");
+        setSubmitting(false);
+        return;
+      }
+
       const res = await fetch(`${baseUrl}/api/resources`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${data.token}`,
+        },
         body: JSON.stringify(form),
       });
       if (!res.ok) throw new Error("Failed to create resource");
