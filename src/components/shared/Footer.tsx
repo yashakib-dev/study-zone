@@ -5,7 +5,7 @@ const navLinks = {
     { label: 'Home', href: '/' },
     { label: 'Explore Resources', href: '/explore' },
     { label: 'Dashboard', href: '/dashboard' },
-    { label: 'Upload Resource', href: '/upload' },
+    { label: 'Upload Resource', href: '/dashboard/user/add' },
   ],
   Company: [
     { label: 'About Us', href: '/about' },
