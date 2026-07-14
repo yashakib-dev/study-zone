@@ -7,7 +7,7 @@ import { authClient } from "@/lib/auth-client";
 
 interface Resource {
   _id: string;
-  title: string;
+  title?: string;
   shortDescription?: string;
   category?: string;
   subject?: string;
