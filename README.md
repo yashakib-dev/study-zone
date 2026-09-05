@@ -1,4 +1,4 @@
-# 🎓 StudyZone
+# StudyZone
 
 > A modern, peer-to-peer learning platform where students share, discover, and organize academic resources — beautifully.
 
@@ -6,29 +6,29 @@ StudyZone is a full-stack Next.js application built for students to seamlessly s
 
 ---
 
-🌐 **Live Demo**: [https://study-zone-amber.vercel.app](https://study-zone-amber.vercel.app)
+**Live Demo**: [https://study-zone-amber.vercel.app](https://study-zone-amber.vercel.app)
 
-🔑 **Demo Credentials**: `demo@studyzone.dev` / `demo12345`
+**Demo Credentials**: `demo@studyzone.dev` / `demo12345`
 
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Details |
 |---|---|
-| 🔒 **Authentication** | Secure email/password login, registration, and session management via [Better Auth](https://better-auth.com/) with MongoDB adapter |
-| 🛡️ **Route Protection** | Edge-based proxy middleware protects all `/dashboard` routes; unauthenticated users are redirected to `/login` with the original URL memorized (`callbackUrl`) |
-| 📊 **Interactive Dashboard** | Contribution stats, category distribution, and community reach charts powered by [Recharts](https://recharts.org/) |
-| 📚 **Resource Exploration** | Browse and search a curated catalog of study materials with category filters |
-| 📤 **Resource Uploads** | Upload notes, guides, or links; assign metadata (title, subject, category) and publish instantly |
-| 👤 **User Profiles** | Avatar initials, display name, and email shown across Navbar and Sidebar |
-| 🎨 **Premium Design** | Midnight obsidian dark theme (`#08090C`), glassmorphism surfaces, electric cerulean accents (`#0084FF`), smooth micro-animations |
-| 📱 **Fully Responsive** | Mobile drawer navigation, responsive dashboard layout with collapsible sidebar |
-| 🔔 **Toast Notifications** | Instant feedback for all user actions via [React Hot Toast](https://react-hot-toast.com/) |
+| **Authentication** | Secure email/password login, registration, and session management via [Better Auth](https://better-auth.com/) with MongoDB adapter |
+| **Route Protection** | Edge-based proxy middleware protects all `/dashboard` routes; unauthenticated users are redirected to `/login` with the original URL memorized (`callbackUrl`) |
+| **Interactive Dashboard** | Contribution stats, category distribution, and community reach charts powered by [Recharts](https://recharts.org/) |
+| **Resource Exploration** | Browse and search a curated catalog of study materials with category filters |
+| **Resource Uploads** | Upload notes, guides, or links; assign metadata (title, subject, category) and publish instantly |
+| **User Profiles** | Avatar initials, display name, and email shown across Navbar and Sidebar |
+| **Premium Design** | Midnight obsidian dark theme (`#08090C`), glassmorphism surfaces, electric cerulean accents (`#0084FF`), smooth micro-animations |
+| **Fully Responsive** | Mobile drawer navigation, responsive dashboard layout with collapsible sidebar |
+| **Toast Notifications** | Instant feedback for all user actions via [React Hot Toast](https://react-hot-toast.com/) |
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 | Technology | Version | Purpose |
@@ -55,7 +55,7 @@ StudyZone is a full-stack Next.js application built for students to seamlessly s
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -104,7 +104,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 study-zone/
@@ -160,7 +160,7 @@ study-zone/
 
 ---
 
-## 🔐 Authentication & Middleware Flow
+## Authentication & Middleware Flow
 
 StudyZone uses [Better Auth](https://better-auth.com/) with a MongoDB adapter and JWT-based cookie caching.
 
@@ -190,7 +190,7 @@ Better Auth stores a `better-auth.session_token` cookie after sign-in. The proxy
 
 ---
 
-## 📊 Dashboard
+## Dashboard
 
 The user dashboard (`/dashboard/user`) provides:
 
@@ -201,7 +201,7 @@ The user dashboard (`/dashboard/user`) provides:
 
 ---
 
-## 🎨 Design System
+## Design System
 
 | Token | Value | Usage |
 |---|---|---|
@@ -218,7 +218,7 @@ The user dashboard (`/dashboard/user`) provides:
 
 ---
 
-## 📝 Available Scripts
+## Available Scripts
 
 ```bash
 npm run dev      # Start development server (Turbopack, hot reload)
@@ -229,7 +229,7 @@ npm run lint     # Run ESLint across the codebase
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! To get started:
 
