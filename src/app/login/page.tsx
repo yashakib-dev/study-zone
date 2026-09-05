@@ -1,18 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface FormErrors {
   email?: string;
   password?: string;
 }
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
@@ -52,7 +53,12 @@ export default function LoginPage() {
 
       if (res) {
         toast.success('Logged in successfully!');
-        router.push('/');
+        const callbackUrl = searchParams.get('callbackUrl');
+        const destination =
+          callbackUrl && callbackUrl.startsWith('/')
+            ? callbackUrl
+            : '/dashboard/user';
+        router.push(destination);
         router.refresh();
       }
     } catch {
@@ -69,30 +75,25 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex-1 bg-slate-950 flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="flex-1 bg-[#08090C] flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8 relative overflow-hidden">
       
-      {/* Ambient glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-[#0084FF]/10 blur-[150px] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-md">
         
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-extrabold text-white">Welcome back</h1>
-          <p className="mt-2 text-sm text-slate-400">
+          <p className="mt-2 text-sm text-[#9CA3AF]">
             Sign in to access your dashboard, resources, and study groups.
           </p>
         </div>
 
-        {/* Card */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/20 p-8 backdrop-blur-sm">
+        <div className="rounded-3xl border border-white/10 bg-[rgba(18,21,28,0.75)] p-8 backdrop-blur-xl shadow-2xl">
           
           <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
 
-              {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                <label htmlFor="email" className="block text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">
                   Email Address
                 </label>
                 <input
@@ -106,10 +107,10 @@ export default function LoginPage() {
                     if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
                   }}
                   placeholder="e.g. sarah@university.edu"
-                  className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${
+                  className={`w-full rounded-xl bg-[#0A0B10] border px-4 py-3 text-sm text-white placeholder-[#9CA3AF]/60 focus:outline-none transition ${
                     errors.email
-                      ? 'border-rose-500/60 focus:border-rose-500 focus:ring-rose-500/30'
-                      : 'border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/30'
+                      ? 'border-rose-500/60 focus:border-rose-500'
+                      : 'border-white/10 focus:border-[#0084FF]'
                   }`}
                 />
                 {errors.email && (
@@ -117,9 +118,8 @@ export default function LoginPage() {
                 )}
               </div>
 
-              {/* Password */}
               <div>
-                <label htmlFor="password" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                <label htmlFor="password" className="block text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -134,16 +134,16 @@ export default function LoginPage() {
                       if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
                     }}
                     placeholder="Enter your password"
-                    className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 pr-11 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${
+                    className={`w-full rounded-xl bg-[#0A0B10] border px-4 py-3 pr-11 text-sm text-white placeholder-[#9CA3AF]/60 focus:outline-none transition ${
                       errors.password
-                        ? 'border-rose-500/60 focus:border-rose-500 focus:ring-rose-500/30'
-                        : 'border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/30'
+                        ? 'border-rose-500/60 focus:border-rose-500'
+                        : 'border-white/10 focus:border-[#0084FF]'
                     }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-white transition-colors cursor-pointer"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? (
@@ -163,41 +163,37 @@ export default function LoginPage() {
                 )}
               </div>
 
-              {/* Forgot Password link */}
               <div className="text-right -mt-2">
-                <Link href="/login" className="text-xs text-slate-500 hover:text-indigo-400 transition-colors">
+                <Link href="/login" className="text-xs text-[#9CA3AF] hover:text-[#0084FF] transition-colors">
                   Forgot password?
                 </Link>
               </div>
 
-              {/* Submit */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-900/40 hover:from-indigo-500 hover:to-indigo-400 active:scale-[0.98] transition-all disabled:opacity-60 cursor-pointer"
+                className="w-full rounded-full bg-gradient-to-r from-[#0084FF] to-[#0D99FF] py-3.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(13,153,255,0.4)] hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? 'Signing in...' : 'Sign In'}
               </button>
 
-              {/* Divider */}
               <div className="flex items-center gap-3 my-1">
-                <div className="flex-1 h-px bg-slate-800" />
-                <span className="text-[10px] text-slate-600 uppercase font-semibold tracking-wider">or</span>
-                <div className="flex-1 h-px bg-slate-800" />
+                <div className="flex-1 h-px bg-white/10" />
+                <span className="text-[10px] text-[#9CA3AF]/60 uppercase font-semibold tracking-wider">or</span>
+                <div className="flex-1 h-px bg-white/10" />
               </div>
 
-              {/* Demo Login */}
               <button
                 type="button"
                 onClick={handleDemoLogin}
-                className="w-full rounded-xl border border-cyan-500/30 bg-cyan-500/5 py-3.5 text-sm font-semibold text-cyan-400 hover:bg-cyan-500/10 hover:text-cyan-300 active:scale-[0.98] transition-all cursor-pointer"
+                className="w-full rounded-full border border-[#0084FF]/30 bg-[#0084FF]/10 py-3.5 text-sm font-semibold text-[#0084FF] hover:bg-[#0084FF]/20 active:scale-[0.98] transition-all cursor-pointer"
               >
                 Use Demo Account
               </button>
 
-              <p className="text-center text-xs text-slate-500 mt-1">
+              <p className="text-center text-xs text-[#9CA3AF] mt-1">
                 Don&apos;t have an account?{' '}
-                <Link href="/register" className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">
+                <Link href="/register" className="font-semibold text-[#0084FF] hover:text-[#0D99FF] transition-colors">
                   Create one
                 </Link>
               </p>
@@ -206,5 +202,13 @@ export default function LoginPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

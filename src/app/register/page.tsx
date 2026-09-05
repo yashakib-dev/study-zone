@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface FormData {
   fullName: string;
@@ -19,8 +19,9 @@ interface FormErrors {
   password?: string;
 }
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [form, setForm] = useState<FormData>({
     fullName: '',
     email: '',
@@ -77,7 +78,12 @@ export default function RegisterPage() {
 
       if (res) {
         toast.success('Registration successful!');
-        router.push('/');
+        const callbackUrl = searchParams.get('callbackUrl');
+        const destination =
+          callbackUrl && callbackUrl.startsWith('/')
+            ? callbackUrl
+            : '/dashboard/user';
+        router.push(destination);
         router.refresh();
       }
     } catch {
@@ -99,30 +105,25 @@ export default function RegisterPage() {
   const strength = passwordStrength();
 
   return (
-    <div className="flex-1 bg-slate-950 flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="flex-1 bg-[#08090C] flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8 relative overflow-hidden">
 
-      {/* Ambient glows */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 h-80 w-80 rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-[#0084FF]/10 blur-[150px] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-md">
 
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-extrabold text-white">Create your account</h1>
-          <p className="mt-2 text-sm text-slate-400">
+          <p className="mt-2 text-sm text-[#9CA3AF]">
             Join thousands of students learning smarter every day.
           </p>
         </div>
 
-        {/* Card */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/20 p-8 backdrop-blur-sm">
+        <div className="rounded-3xl border border-white/10 bg-[rgba(18,21,28,0.75)] p-8 backdrop-blur-xl shadow-2xl">
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
 
-              {/* Full Name */}
               <div>
-                <label htmlFor="fullName" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                <label htmlFor="fullName" className="block text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">
                   Full Name
                 </label>
                 <input
@@ -133,9 +134,9 @@ export default function RegisterPage() {
                   value={form.fullName}
                   onChange={handleChange}
                   placeholder="e.g. Sarah Chen"
-                  className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${errors.fullName
-                      ? 'border-rose-500/60 focus:border-rose-500 focus:ring-rose-500/30'
-                      : 'border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/30'
+                  className={`w-full rounded-xl bg-[#0A0B10] border px-4 py-3 text-sm text-white placeholder-[#9CA3AF]/60 focus:outline-none transition ${errors.fullName
+                      ? 'border-rose-500/60 focus:border-rose-500'
+                      : 'border-white/10 focus:border-[#0084FF]'
                     }`}
                 />
                 {errors.fullName && (
@@ -143,9 +144,8 @@ export default function RegisterPage() {
                 )}
               </div>
 
-              {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                <label htmlFor="email" className="block text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">
                   Email Address
                 </label>
                 <input
@@ -156,9 +156,9 @@ export default function RegisterPage() {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="e.g. sarah@university.edu"
-                  className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${errors.email
-                      ? 'border-rose-500/60 focus:border-rose-500 focus:ring-rose-500/30'
-                      : 'border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/30'
+                  className={`w-full rounded-xl bg-[#0A0B10] border px-4 py-3 text-sm text-white placeholder-[#9CA3AF]/60 focus:outline-none transition ${errors.email
+                      ? 'border-rose-500/60 focus:border-rose-500'
+                      : 'border-white/10 focus:border-[#0084FF]'
                     }`}
                 />
                 {errors.email && (
@@ -166,9 +166,8 @@ export default function RegisterPage() {
                 )}
               </div>
 
-              {/* Password */}
               <div>
-                <label htmlFor="password" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                <label htmlFor="password" className="block text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -180,15 +179,15 @@ export default function RegisterPage() {
                     value={form.password}
                     onChange={handleChange}
                     placeholder="Min. 8 characters"
-                    className={`w-full rounded-xl bg-slate-900/60 border px-4 py-3 pr-11 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 transition ${errors.password
-                        ? 'border-rose-500/60 focus:border-rose-500 focus:ring-rose-500/30'
-                        : 'border-slate-800 focus:border-indigo-500/50 focus:ring-indigo-500/30'
+                    className={`w-full rounded-xl bg-[#0A0B10] border px-4 py-3 pr-11 text-sm text-white placeholder-[#9CA3AF]/60 focus:outline-none transition ${errors.password
+                        ? 'border-rose-500/60 focus:border-rose-500'
+                        : 'border-white/10 focus:border-[#0084FF]'
                       }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-white transition-colors cursor-pointer"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? (
@@ -206,11 +205,11 @@ export default function RegisterPage() {
                 {/* Strength meter */}
                 {form.password && (
                   <div className="mt-2">
-                    <div className="h-1 w-full rounded-full bg-slate-900 overflow-hidden">
+                    <div className="h-1 w-full rounded-full bg-white/10 overflow-hidden">
                       <div className={`h-full rounded-full transition-all duration-300 ${strength.color} ${strength.width}`} />
                     </div>
-                    <p className="mt-1 text-[10px] text-slate-500">
-                      Strength: <span className="font-semibold text-slate-350">{strength.label}</span>
+                    <p className="mt-1 text-[10px] text-[#9CA3AF]">
+                      Strength: <span className="font-semibold text-white">{strength.label}</span>
                     </p>
                   </div>
                 )}
@@ -219,10 +218,9 @@ export default function RegisterPage() {
                 )}
               </div>
 
-              {/* Profile Photo URL (Optional) */}
               <div>
-                <label htmlFor="photoUrl" className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                  Profile Photo URL <span className="text-slate-600 normal-case font-normal">(optional)</span>
+                <label htmlFor="photoUrl" className="block text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">
+                  Profile Photo URL <span className="text-[#9CA3AF]/60 normal-case font-normal">(optional)</span>
                 </label>
                 <input
                   id="photoUrl"
@@ -231,23 +229,21 @@ export default function RegisterPage() {
                   value={form.photoUrl}
                   onChange={handleChange}
                   placeholder="https://example.com/photo.jpg"
-                  className="w-full rounded-xl bg-slate-900/60 border border-slate-800 px-4 py-3 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition"
+                  className="w-full rounded-xl bg-[#0A0B10] border border-white/10 px-4 py-3 text-sm text-white placeholder-[#9CA3AF]/60 focus:outline-none focus:border-[#0084FF] transition"
                 />
               </div>
 
-
-              {/* Submit */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-900/40 hover:from-indigo-500 hover:to-indigo-400 active:scale-[0.98] transition-all disabled:opacity-60 cursor-pointer"
+                className="w-full rounded-full bg-gradient-to-r from-[#0084FF] to-[#0D99FF] py-3.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(13,153,255,0.4)] hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting ? 'Creating account...' : 'Create Account'}
               </button>
 
-              <p className="text-center text-xs text-slate-500 mt-1">
+              <p className="text-center text-xs text-[#9CA3AF] mt-1">
                 Already have an account?{' '}
-                <Link href="/login" className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">
+                <Link href="/login" className="font-semibold text-[#0084FF] hover:text-[#0D99FF] transition-colors">
                   Log in
                 </Link>
               </p>
@@ -256,5 +252,13 @@ export default function RegisterPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
   );
 }

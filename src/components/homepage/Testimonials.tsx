@@ -51,10 +51,10 @@ const testimonials = [
 
 function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
   return (
-    <div className="flex w-80 shrink-0 flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/40 p-6 backdrop-blur-sm mx-3">
-      <div className="flex gap-1">
+    <div className="flex w-80 shrink-0 flex-col gap-4 rounded-2xl border border-white/10 bg-[rgba(18,21,28,0.75)] p-6 backdrop-blur-xl mx-3 shadow-lg">
+      <div className="flex gap-1 text-[#FBBF24]">
         {Array.from({ length: t.rating }).map((_, i) => (
-          <svg key={i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 text-cyan-400">
+          <svg key={i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
             <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clipRule="evenodd" />
           </svg>
         ))}
@@ -64,15 +64,15 @@ function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
         &ldquo;{t.quote}&rdquo;
       </p>
 
-      <div className="flex items-center gap-3 pt-2 border-t border-slate-800">
-        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr ${t.avatarGrad} p-[2px]`}>
-          <div className="flex h-full w-full items-center justify-center rounded-full bg-slate-950 text-xs font-bold text-white">
+      <div className="flex items-center gap-3 pt-3 border-t border-white/10">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-[#0084FF] to-[#0D99FF] p-[2px] shadow-[0_0_10px_rgba(13,153,255,0.4)]">
+          <div className="flex h-full w-full items-center justify-center rounded-full bg-[#0A0B10] text-xs font-bold text-white">
             {t.avatar}
           </div>
         </div>
         <div>
           <p className="text-sm font-semibold text-white">{t.name}</p>
-          <p className="text-xs text-slate-500">{t.role}</p>
+          <p className="text-xs text-[#9CA3AF]">{t.role}</p>
         </div>
       </div>
     </div>
@@ -83,26 +83,26 @@ export default function Testimonials() {
   const doubled = [...testimonials, ...testimonials];
 
   return (
-    <section className="bg-slate-950 py-20 lg:py-28 border-t border-slate-900 overflow-hidden">
+    <section className="bg-[#08090C] py-20 lg:py-28 border-t border-white/5 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-14 text-center">
-        <span className="inline-block rounded-full bg-indigo-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-4">
+        <span className="inline-block rounded-full bg-[#0084FF]/10 border border-[#0084FF]/20 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-[#0084FF] mb-4">
           Student Stories
         </span>
         <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
           Loved by{' '}
-          <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-500 bg-clip-text text-transparent">
+          <span className="text-[#0084FF]">
             Students Worldwide
           </span>
         </h2>
-        <p className="mt-4 text-base text-slate-400 max-w-xl mx-auto">
+        <p className="mt-4 text-base text-[#9CA3AF] max-w-xl mx-auto">
           Thousands of students and developers trust StudyZone to help them grow every day.
         </p>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-slate-950 to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-slate-950 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#08090C] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#08090C] to-transparent" />
 
           <div className="flex animate-marquee-rtl">
             {doubled.map((t, i) => (

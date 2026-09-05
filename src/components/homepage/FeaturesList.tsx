@@ -66,37 +66,36 @@ const accentMap: Record<string, { icon: string; border: string; glow: string; ba
 
 export default function FeaturesList() {
   return (
-    <section className="bg-slate-950 py-20 lg:py-28">
+    <section className="bg-[#08090C] py-20 lg:py-28 border-t border-white/5">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         <div className="mb-14 text-center">
-          <span className="inline-block rounded-full bg-cyan-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-cyan-400 mb-4">
+          <span className="inline-block rounded-full bg-[#0084FF]/10 border border-[#0084FF]/20 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-[#0084FF] mb-4">
             Platform Benefits
           </span>
           <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
             Why Choose{' '}
-            <span className="bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-500 bg-clip-text text-transparent">
+            <span className="text-[#0084FF]">
               StudyZone
             </span>
           </h2>
-          <p className="mt-4 text-base text-slate-400 max-w-xl mx-auto">
+          <p className="mt-4 text-base text-[#9CA3AF] max-w-xl mx-auto">
             Built for students and developers who want to learn efficiently, collaborate meaningfully, and access quality materials without barriers.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature) => {
-            const accent = accentMap[feature.accent];
             return (
               <div
                 key={feature.title}
-                className={`group relative rounded-2xl border border-slate-800 bg-slate-900/40 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${accent.border}`}
+                className="group relative rounded-2xl border border-white/10 bg-[rgba(18,21,28,0.75)] p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-[#0084FF]/50 hover:shadow-[0_0_25px_rgba(13,153,255,0.2)]"
               >
-                <div className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl ${accent.glow}`}>
-                  <span className={accent.icon}>{feature.icon}</span>
+                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#0084FF]/15 text-[#0084FF] shadow-[0_0_12px_rgba(13,153,255,0.3)]">
+                  {feature.icon}
                 </div>
                 <h3 className="mb-2 text-base font-semibold text-white">{feature.title}</h3>
-                <p className="text-sm leading-relaxed text-slate-400">{feature.description}</p>
+                <p className="text-sm leading-relaxed text-[#9CA3AF]">{feature.description}</p>
               </div>
             );
           })}

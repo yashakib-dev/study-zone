@@ -30,36 +30,31 @@ export default function Navbar() {
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
   const closeDrawer = () => setIsDrawerOpen(false);
 
-  const activeLinkClass = "text-cyan-400 font-semibold relative after:absolute after:bottom-[-22px] after:left-0 after:right-0 after:h-[2px] after:bg-cyan-400 after:rounded-full";
-  const inactiveLinkClass = "text-slate-300 hover:text-cyan-400 transition-colors duration-200 font-medium";
+  const activeLinkClass = "bg-[#0084FF]/15 text-white font-semibold text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-[#0084FF]/30 shadow-[0_0_12px_rgba(13,153,255,0.25)] transition-all duration-300 ease-out";
+  const inactiveLinkClass = "text-[#9CA3AF] hover:text-white transition-all duration-300 ease-out font-medium text-xs sm:text-sm px-3.5 py-1.5 rounded-full hover:bg-white/5";
 
-  const activeMobileLinkClass = "text-cyan-400 font-semibold bg-slate-900/60 pl-3 border-l-2 border-cyan-400 py-2 rounded-r-md";
-  const inactiveMobileLinkClass = "text-slate-300 hover:text-cyan-400 pl-3 transition-all duration-200 py-2 hover:bg-slate-900/30 rounded-md";
+  const activeMobileLinkClass = "text-white font-semibold bg-[#0084FF]/15 border border-[#0084FF]/30 px-4 py-2.5 rounded-xl shadow-[0_0_12px_rgba(13,153,255,0.2)] transition-all duration-300";
+  const inactiveMobileLinkClass = "text-[#9CA3AF] hover:text-white px-4 transition-all duration-300 py-2.5 hover:bg-white/5 rounded-xl font-medium text-sm";
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md transition-all duration-300">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          
-          <Link href="/" className="flex items-center gap-2 group" onClick={closeDrawer}>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-6 w-6 text-white">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-              </svg>
-            </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-white via-slate-100 to-cyan-400 bg-clip-text text-transparent group-hover:text-white transition-colors duration-200">
-              StudyZone
+      <header className="sticky top-0 z-50 w-full pt-4 pb-2 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between rounded-full bg-[rgba(18,21,28,0.75)] backdrop-blur-xl border border-[rgba(255,255,255,0.08)] px-5 sm:px-6 shadow-2xl shadow-black/60">
+
+          <Link href="/" className="group flex items-center" onClick={closeDrawer}>
+            <span className="text-lg sm:text-xl font-black tracking-tight text-white transition-opacity duration-200 group-hover:opacity-90">
+              Study<span className="bg-gradient-to-r from-[#0084FF] to-[#0D99FF] bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(13,153,255,0.6)]">Zone</span>
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-2.5">
             <Link href="/" className={pathname === '/' ? activeLinkClass : inactiveLinkClass}>
               Home
             </Link>
             <Link href="/explore" className={pathname === '/explore' ? activeLinkClass : inactiveLinkClass}>
               Explore
             </Link>
-            <Link href="/dashboard/user" className={pathname === '/dashboard' ? activeLinkClass : inactiveLinkClass}>
+            <Link href="/dashboard/user" className={pathname.startsWith('/dashboard') ? activeLinkClass : inactiveLinkClass}>
               Dashboard
             </Link>
             <Link href="/about" className={pathname === '/about' ? activeLinkClass : inactiveLinkClass}>
@@ -71,27 +66,27 @@ export default function Navbar() {
           </nav>
 
           {user ? (
-            <div className="hidden md:flex items-center gap-4">
-              <div className="flex items-center gap-2 bg-slate-900/40 border border-slate-800/80 rounded-xl px-3 py-1.5">
+            <div className="hidden md:flex items-center gap-3">
+              <Link href="/dashboard/user" className="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5 hover:bg-white/10 hover:border-white/20 transition-all">
                 {user.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={user.image}
                     alt={user.name}
-                    className="h-7 w-7 rounded-full object-cover border border-cyan-500/30"
+                    className="h-6 w-6 rounded-full object-cover border border-[#0084FF]/50"
                   />
                 ) : (
-                  <div className="h-7 w-7 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-xs font-semibold text-white">
+                  <div className="h-6 w-6 rounded-full bg-gradient-to-r from-[#0084FF] to-[#0D99FF] flex items-center justify-center text-[10px] font-bold text-white">
                     {user.name ? user.name[0].toUpperCase() : 'U'}
                   </div>
                 )}
-                <span className="text-sm font-medium text-slate-200">
+                <span className="text-xs font-semibold text-white">
                   Hi, {firstName}
                 </span>
-              </div>
+              </Link>
               <button
                 onClick={handleLogout}
-                className="rounded-lg border border-slate-800 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 hover:border-rose-500/20 active:scale-95 transition-all duration-150 text-center cursor-pointer"
+                className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-[#9CA3AF] hover:text-rose-400 hover:bg-rose-500/10 hover:border-rose-500/30 transition-all duration-150 cursor-pointer"
               >
                 Logout
               </button>
@@ -100,13 +95,13 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-3">
               <Link
                 href="/login"
-                className="rounded-lg border border-slate-800 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-900/60 hover:border-slate-700 active:scale-95 transition-all duration-150 text-center"
+                className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-[#9CA3AF] hover:text-white hover:bg-white/10 transition-all duration-150 text-center"
               >
                 Login
               </Link>
               <Link
                 href="/register"
-                className="rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-indigo-900/30 hover:from-indigo-500 hover:to-indigo-400 hover:shadow-indigo-500/20 active:scale-95 transition-all duration-150 text-center"
+                className="rounded-full bg-gradient-to-r from-[#0084FF] to-[#0D99FF] px-4.5 py-1.5 text-xs font-semibold text-white shadow-[0_0_16px_rgba(13,153,255,0.40)] hover:brightness-110 active:scale-95 transition-all duration-150 text-center"
               >
                 Register
               </Link>
@@ -115,15 +110,15 @@ export default function Navbar() {
 
           <button
             onClick={toggleDrawer}
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/50 text-slate-300 md:hidden hover:text-white hover:bg-slate-900 transition-colors duration-200 cursor-pointer"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#9CA3AF] md:hidden hover:text-white transition-colors duration-200 cursor-pointer"
             aria-label="Toggle Menu"
           >
             {isDrawerOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-6 w-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-5 w-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-6 w-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-5 w-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
               </svg>
             )}
@@ -134,31 +129,26 @@ export default function Navbar() {
 
       {isDrawerOpen && (
         <div
-          className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm md:hidden transition-opacity duration-300"
+          className="fixed inset-0 z-40 bg-black/75 backdrop-blur-md md:hidden transition-opacity duration-300"
           onClick={closeDrawer}
         />
       )}
 
       <div
-        className={`fixed inset-y-0 right-0 z-50 w-72 bg-slate-950 border-l border-slate-850 p-6 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col justify-between ${
+        className={`fixed inset-y-0 right-0 z-50 w-72 bg-[#0A0B10] border-l border-white/10 p-6 shadow-2xl transition-transform duration-300 ease-in-out md:hidden flex flex-col justify-between ${
           isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div>
-          <div className="flex items-center justify-between border-b border-slate-900 pb-4 mb-6">
-            <Link href="/" className="flex items-center gap-2 group" onClick={closeDrawer}>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-indigo-600 to-cyan-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-5 w-5 text-white">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                </svg>
-              </div>
-              <span className="text-lg font-bold bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent">
-                StudyZone
+          <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+            <Link href="/" className="group flex items-center" onClick={closeDrawer}>
+              <span className="text-lg font-black tracking-tight text-white transition-opacity duration-200 group-hover:opacity-90">
+                Study<span className="bg-gradient-to-r from-[#0084FF] to-[#0D99FF] bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(13,153,255,0.6)]">Zone</span>
               </span>
             </Link>
             <button
               onClick={closeDrawer}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-900 bg-slate-900/30 text-slate-400 hover:text-white cursor-pointer"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#9CA3AF] hover:text-white cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-5 w-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -166,87 +156,59 @@ export default function Navbar() {
             </button>
           </div>
 
-          <nav className="flex flex-col gap-4">
-            <Link
-              href="/"
-              onClick={closeDrawer}
-              className={pathname === '/' ? activeMobileLinkClass : inactiveMobileLinkClass}
-            >
+          <nav className="flex flex-col gap-2.5">
+            <Link href="/" onClick={closeDrawer} className={pathname === '/' ? activeMobileLinkClass : inactiveMobileLinkClass}>
               Home
             </Link>
-            <Link
-              href="/explore"
-              onClick={closeDrawer}
-              className={pathname === '/explore' ? activeMobileLinkClass : inactiveMobileLinkClass}
-            >
+            <Link href="/explore" onClick={closeDrawer} className={pathname === '/explore' ? activeMobileLinkClass : inactiveMobileLinkClass}>
               Explore
             </Link>
-            <Link
-              href="/dashboard"
-              onClick={closeDrawer}
-              className={pathname === '/dashboard' ? activeMobileLinkClass : inactiveMobileLinkClass}
-            >
+            <Link href="/dashboard/user" onClick={closeDrawer} className={pathname.startsWith('/dashboard') ? activeMobileLinkClass : inactiveMobileLinkClass}>
               Dashboard
             </Link>
-            <Link
-              href="/about"
-              onClick={closeDrawer}
-              className={pathname === '/about' ? activeMobileLinkClass : inactiveMobileLinkClass}
-            >
+            <Link href="/about" onClick={closeDrawer} className={pathname === '/about' ? activeMobileLinkClass : inactiveMobileLinkClass}>
               About
             </Link>
-            <Link
-              href="/contact"
-              onClick={closeDrawer}
-              className={pathname === '/contact' ? activeMobileLinkClass : inactiveMobileLinkClass}
-            >
+            <Link href="/contact" onClick={closeDrawer} className={pathname === '/contact' ? activeMobileLinkClass : inactiveMobileLinkClass}>
               Contact
             </Link>
           </nav>
         </div>
 
-        <div className="border-t border-slate-900 pt-6 flex flex-col gap-3">
+        <div className="border-t border-white/10 pt-6 flex flex-col gap-3">
           {user ? (
             <>
-              <div className="flex items-center gap-3 bg-slate-900/40 border border-slate-800/80 rounded-xl p-3 mb-2">
+              <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-3 mb-1">
                 {user.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={user.image}
                     alt={user.name}
-                    className="h-9 w-9 rounded-full object-cover border border-cyan-500/30"
+                    className="h-9 w-9 rounded-full object-cover border border-[#0084FF]/50"
                   />
                 ) : (
-                  <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-sm font-semibold text-white">
+                  <div className="h-9 w-9 rounded-full bg-gradient-to-r from-[#0084FF] to-[#0D99FF] flex items-center justify-center text-xs font-bold text-white">
                     {user.name ? user.name[0].toUpperCase() : 'U'}
                   </div>
                 )}
                 <div>
-                  <p className="text-xs text-slate-400">Logged in as</p>
-                  <p className="text-sm font-semibold text-slate-200">{user.name}</p>
+                  <p className="text-[11px] text-[#9CA3AF]">Logged in as</p>
+                  <p className="text-xs font-semibold text-white">{user.name}</p>
                 </div>
               </div>
               <button
                 onClick={handleLogout}
-                className="w-full rounded-xl border border-slate-800 bg-slate-900/40 py-3 text-sm font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 active:scale-[0.98] transition-all text-center cursor-pointer"
+                className="w-full rounded-full border border-white/10 bg-white/5 py-2.5 text-xs font-semibold text-rose-400 hover:bg-rose-500/20 active:scale-95 transition-all text-center cursor-pointer"
               >
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link
-                href="/login"
-                onClick={closeDrawer}
-                className="w-full rounded-xl border border-slate-800 bg-slate-900/40 py-3 text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-900/60 active:scale-[0.98] transition-all text-center"
-              >
+              <Link href="/login" onClick={closeDrawer} className="w-full rounded-full border border-white/10 bg-white/5 py-2.5 text-xs font-semibold text-[#9CA3AF] hover:text-white active:scale-95 transition-all text-center">
                 Login
               </Link>
-              <Link
-                href="/register"
-                onClick={closeDrawer}
-                className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-950/40 hover:from-indigo-500 hover:to-indigo-400 active:scale-[0.98] transition-all text-center"
-              >
+              <Link href="/register" onClick={closeDrawer} className="w-full rounded-full bg-gradient-to-r from-[#0084FF] to-[#0D99FF] py-2.5 text-xs font-semibold text-white shadow-[0_0_20px_rgba(13,153,255,0.40)] active:scale-95 transition-all text-center">
                 Register
               </Link>
             </>

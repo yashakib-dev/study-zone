@@ -83,11 +83,11 @@ export default function Sidebar() {
 
   if (isPending) {
     return (
-      <aside className="hidden lg:flex w-64 shrink-0 bg-slate-950 border-r border-slate-800 min-h-screen flex-col p-5">
-        <div className="h-8 w-32 rounded-lg bg-slate-800 animate-pulse mb-8" />
+      <aside className="hidden lg:flex w-64 shrink-0 bg-[#08090C] border-r border-white/10 min-h-screen flex-col p-5">
+        <div className="h-8 w-32 rounded-lg bg-white/5 animate-pulse mb-8" />
         <div className="space-y-3 flex-1">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-10 rounded-xl bg-slate-800/60 animate-pulse" />
+            <div key={i} className="h-10 rounded-xl bg-white/5 animate-pulse" />
           ))}
         </div>
       </aside>
@@ -113,11 +113,11 @@ export default function Sidebar() {
             href={item.href}
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
               isActive
-                ? "bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 font-semibold"
-                : "text-slate-400 hover:bg-slate-800/40 hover:text-white"
+                ? "bg-[#0084FF]/10 text-[#0084FF] border border-[#0084FF]/20 font-semibold"
+                : "text-[#9CA3AF] hover:bg-white/5 hover:text-white"
             }`}
           >
-            <item.icon className={`h-5 w-5 transition-colors ${isActive ? "text-indigo-400" : "text-slate-500"}`} />
+            <item.icon className={`h-5 w-5 transition-colors ${isActive ? "text-[#0084FF]" : "text-[#9CA3AF]"}`} />
             {item.label}
           </Link>
         );
@@ -126,19 +126,19 @@ export default function Sidebar() {
   );
 
   const userCard = (
-    <div className="border-t border-slate-800/80 pt-4 mt-4">
-      <div className="flex items-center gap-3 px-3 py-3 rounded-xl bg-slate-800/40 mb-3">
-        <div className="h-9 w-9 shrink-0 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center text-sm font-bold text-white shadow">
+    <div className="border-t border-white/10 pt-4 mt-4">
+      <div className="flex items-center gap-3 px-3 py-3 rounded-xl bg-white/5 mb-3 border border-white/5">
+        <div className="h-9 w-9 shrink-0 rounded-full bg-gradient-to-r from-[#0084FF] to-[#0D99FF] flex items-center justify-center text-sm font-bold text-white shadow-[0_0_10px_rgba(13,153,255,0.4)]">
           {getInitials(user?.name)}
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold text-white truncate">{user?.name || "User"}</p>
-          <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+          <p className="text-xs text-[#9CA3AF] truncate">{user?.email}</p>
         </div>
       </div>
       <button
         onClick={handleLogout}
-        className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-150"
+        className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#9CA3AF] hover:text-rose-400 hover:bg-rose-500/10 transition-all duration-150 cursor-pointer"
       >
         <LogoutIcon className="h-5 w-5" />
         Sign Out
@@ -148,23 +148,17 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Desktop sidebar */}
-      <aside className="hidden lg:flex w-64 shrink-0 bg-slate-950 border-r border-slate-800/80 min-h-screen flex-col">
-        <div className="px-5 py-6 border-b border-slate-800/80">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center shadow-lg">
-              <svg className="h-4 w-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <span className="text-base font-extrabold text-white tracking-tight group-hover:text-cyan-400 transition-colors">
-              StudyZone
+      <aside className="hidden lg:flex w-64 shrink-0 bg-[#08090C] border-r border-white/10 min-h-screen flex-col">
+        <div className="px-5 py-6 border-b border-white/10">
+          <Link href="/" className="group inline-flex items-center">
+            <span className="text-xl font-black tracking-tight text-white transition-opacity duration-200 group-hover:opacity-90">
+              Study<span className="bg-gradient-to-r from-[#0084FF] to-[#0D99FF] bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(13,153,255,0.6)]">Zone</span>
             </span>
           </Link>
         </div>
 
         <div className="flex-1 px-3 py-5">
-          <p className="px-3 mb-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Menu</p>
+          <p className="px-3 mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#9CA3AF]/60">Menu</p>
           {navContent}
         </div>
 
@@ -173,47 +167,41 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* Mobile sidebar toggle */}
       <button
         onClick={() => setDrawerOpen(true)}
-        className="lg:hidden fixed top-20 right-4 z-40 min-w-10 w-10 h-10 p-0 flex items-center justify-center rounded-xl bg-slate-950/90 border border-slate-800 text-slate-300 backdrop-blur-md transition-all shadow-lg shadow-black/40 hover:text-white hover:border-slate-700"
+        className="lg:hidden fixed top-20 right-4 z-40 min-w-10 w-10 h-10 p-0 flex items-center justify-center rounded-xl bg-[#08090C]/90 border border-white/10 text-[#9CA3AF] backdrop-blur-md transition-all shadow-lg hover:text-white hover:border-white/20"
       >
         <SidebarIcon className="w-5 h-5" />
       </button>
 
-      {/* Mobile drawer backdrop */}
       {drawerOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity"
+          className="lg:hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm transition-opacity"
           onClick={() => setDrawerOpen(false)}
         />
       )}
 
-      {/* Mobile drawer panel */}
       <div
-        className={`lg:hidden fixed top-0 left-0 z-50 h-full w-72 bg-slate-950 border-r border-slate-800/80 flex flex-col transform transition-transform duration-300 ease-in-out ${
+        className={`lg:hidden fixed top-0 left-0 z-50 h-full w-72 bg-[#0A0B10] border-r border-white/10 flex flex-col transform transition-transform duration-300 ease-in-out ${
           drawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between px-5 py-5 border-b border-slate-800/80">
-          <Link href="/" className="flex items-center gap-2.5" onClick={() => setDrawerOpen(false)}>
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center shadow-lg">
-              <svg className="h-4 w-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <span className="text-base font-extrabold text-white tracking-tight">StudyZone</span>
+        <div className="flex items-center justify-between px-5 py-5 border-b border-white/10">
+          <Link href="/" className="group flex items-center" onClick={() => setDrawerOpen(false)}>
+            <span className="text-lg font-black tracking-tight text-white transition-opacity duration-200 group-hover:opacity-90">
+              Study<span className="bg-gradient-to-r from-[#0084FF] to-[#0D99FF] bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(13,153,255,0.6)]">Zone</span>
+            </span>
           </Link>
           <button
             onClick={() => setDrawerOpen(false)}
-            className="h-8 w-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="h-8 w-8 flex items-center justify-center rounded-lg text-[#9CA3AF] hover:text-white hover:bg-white/5 transition"
           >
             <CloseIcon className="h-5 w-5" />
           </button>
         </div>
 
         <div className="flex-1 px-3 py-5">
-          <p className="px-3 mb-3 text-[10px] font-semibold uppercase tracking-widest text-slate-500">Menu</p>
+          <p className="px-3 mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#9CA3AF]/60">Menu</p>
           {navContent}
         </div>
 

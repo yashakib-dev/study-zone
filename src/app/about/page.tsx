@@ -39,18 +39,20 @@ const pillars = [
 
 export default function AboutPage() {
   return (
-    <div className="flex-1 bg-slate-950 py-16 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
+    <div className="flex-1 bg-[#08090C] py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-[#0084FF]/10 blur-[150px] pointer-events-none" />
+
+      <div className="mx-auto max-w-5xl relative z-10">
         
         {/* Hero Area */}
         <div className="mb-16 text-center">
-          <span className="inline-block rounded-full bg-indigo-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-indigo-400 mb-4">
+          <span className="inline-block rounded-full bg-[#0084FF]/10 border border-[#0084FF]/20 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-[#0084FF] mb-4">
             Our Mission
           </span>
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-500 bg-clip-text text-transparent">
-            Democratizing Academic Resources
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+            Democratizing <span className="text-[#0084FF]">Academic Resources</span>
           </h1>
-          <p className="mt-6 text-lg text-slate-405 leading-relaxed max-w-3xl mx-auto">
+          <p className="mt-6 text-lg text-[#9CA3AF] leading-relaxed max-w-3xl mx-auto">
             StudyZone was founded by a small group of university students tired of paywalled lecture slides, expensive homework solutions, and fragmented sharing sites. We designed a clean, open home where files are always free to access.
           </p>
         </div>
@@ -58,11 +60,11 @@ export default function AboutPage() {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4 mb-20">
           {stats.map((s) => (
-            <div key={s.label} className="text-center rounded-2xl border border-slate-900 bg-slate-900/20 p-6 backdrop-blur-sm">
-              <p className="text-3xl font-extrabold bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-500 bg-clip-text text-transparent">
+            <div key={s.label} className="text-center rounded-2xl border border-white/10 bg-[rgba(18,21,28,0.75)] p-6 backdrop-blur-xl shadow-lg">
+              <p className="text-3xl font-extrabold text-[#0084FF]">
                 {s.value}
               </p>
-              <p className="mt-2 text-xs text-slate-500 font-semibold uppercase tracking-wider">{s.label}</p>
+              <p className="mt-2 text-xs text-[#9CA3AF] font-semibold uppercase tracking-wider">{s.label}</p>
             </div>
           ))}
         </div>
@@ -74,29 +76,29 @@ export default function AboutPage() {
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {pillars.map((p) => (
-              <div key={p.title} className="rounded-2xl border border-slate-900 bg-slate-900/30 p-8 hover:border-slate-800 transition duration-200">
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900/60 border border-slate-800">
+              <div key={p.title} className="rounded-2xl border border-white/10 bg-[rgba(18,21,28,0.75)] p-8 backdrop-blur-xl hover:border-[#0084FF]/40 transition duration-200 shadow-lg">
+                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#0084FF]/15 text-[#0084FF]">
                   {p.icon}
                 </div>
                 <h3 className="text-lg font-bold text-white mb-3">{p.title}</h3>
-                <p className="text-sm leading-relaxed text-slate-400">{p.desc}</p>
+                <p className="text-sm leading-relaxed text-[#9CA3AF]">{p.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Call to Action banner inside about page */}
-        <div className="rounded-3xl border border-slate-800 bg-gradient-to-tr from-slate-900 to-slate-950 p-8 text-center sm:p-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 h-40 w-40 bg-cyan-500/5 blur-[80px] pointer-events-none" />
+        <div className="rounded-3xl border border-white/10 bg-[rgba(18,21,28,0.75)] backdrop-blur-xl p-8 text-center sm:p-12 relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 h-40 w-40 bg-[#0084FF]/10 blur-[80px] pointer-events-none" />
           <h3 className="text-2xl font-bold text-white mb-4">Want to support the platform?</h3>
-          <p className="text-sm text-slate-400 max-w-xl mx-auto mb-8 leading-relaxed">
+          <p className="text-sm text-[#9CA3AF] max-w-xl mx-auto mb-8 leading-relaxed">
             Since StudyZone runs entirely on student volunteers and donations, you can support us by uploading your course review documents, code guides, or sharing this platform with peers.
           </p>
           <div className="flex justify-center gap-4">
-            <a href="/upload" className="rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-6 py-3.5 text-xs font-semibold text-white shadow-lg shadow-indigo-900/30 hover:from-indigo-500 hover:to-indigo-400 active:scale-95 transition-all">
+            <a href="/upload" className="rounded-full bg-gradient-to-r from-[#0084FF] to-[#0D99FF] px-6 py-3.5 text-xs font-semibold text-white shadow-[0_0_20px_rgba(13,153,255,0.4)] hover:brightness-110 active:scale-95 transition-all">
               Upload Notes
             </a>
-            <a href="/explore" className="rounded-xl border border-slate-700 bg-slate-900/40 px-6 py-3.5 text-xs font-semibold text-slate-350 hover:text-white hover:bg-slate-800/60 transition-all">
+            <a href="/explore" className="rounded-full border border-white/10 bg-white/5 px-6 py-3.5 text-xs font-semibold text-white hover:bg-white/10 transition-all">
               Explore Material
             </a>
           </div>

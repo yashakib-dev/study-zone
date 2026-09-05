@@ -1,5 +1,46 @@
 @import "tailwindcss";
-@import "@heroui/styles"; 
+@import "@heroui/styles";
+
+@layer base {
+  :root {
+    --canvas-bg: #08090C;
+    --canvas-surface: #0A0B10;
+    --glass-surface: rgba(18, 21, 28, 0.75);
+    --subtle-border: rgba(255, 255, 255, 0.08);
+    --primary-accent: #0084FF;
+    --primary-accent-light: #0D99FF;
+    --luminescence-glow: rgba(13, 153, 255, 0.40);
+    --active-green: #10B981;
+    --star-amber: #FBBF24;
+    --heading-white: #FFFFFF;
+    --body-slate: #9CA3AF;
+  }
+
+  body {
+    background-color: #08090C;
+    color: #9CA3AF;
+    font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  }
+}
+
+.glass-panel {
+  background-color: rgba(18, 21, 28, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glow-cerulean {
+  box-shadow: 0 0 25px rgba(13, 153, 255, 0.40);
+}
+
+.glow-cerulean-sm {
+  box-shadow: 0 0 15px rgba(13, 153, 255, 0.35);
+}
+
+.glow-cerulean-lg {
+  box-shadow: 0 0 35px rgba(13, 153, 255, 0.45);
+}
 
 @keyframes marquee-rtl {
   0%   { transform: translateX(0); }
@@ -41,4 +82,5 @@
 .animate-float-gentle-delay {
   animation: float-gentle-delay 6s ease-in-out infinite;
 }
+
 

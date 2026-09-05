@@ -59,38 +59,30 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-slate-900 bg-slate-950">
+    <footer className="border-t border-white/5 bg-[#08090C]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-        {/* Main footer grid */}
         <div className="grid grid-cols-1 gap-12 py-14 sm:grid-cols-2 lg:grid-cols-5">
 
-          {/* Brand column */}
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-2 group">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-200">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="h-5 w-5 text-white">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                </svg>
-              </div>
-              <span className="text-lg font-bold bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent">
-                StudyZone
+            <Link href="/" className="inline-flex items-center group">
+              <span className="text-xl font-black tracking-tight text-white transition-opacity duration-200 group-hover:opacity-90">
+                Study<span className="bg-gradient-to-r from-[#0084FF] to-[#0D99FF] bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(13,153,255,0.6)]">Zone</span>
               </span>
             </Link>
 
-            <p className="mt-4 text-sm text-slate-400 leading-relaxed max-w-xs">
+            <p className="mt-4 text-sm text-[#9CA3AF] leading-relaxed max-w-xs">
               A free, community-driven platform for students and developers to share resources, collaborate, and grow together.
             </p>
 
-            {/* Contact info */}
-            <div className="mt-6 flex flex-col gap-2 text-sm text-slate-400">
-              <a href="mailto:hello@studyzone.dev" className="inline-flex items-center gap-2 hover:text-cyan-400 transition-colors duration-150">
+            <div className="mt-6 flex flex-col gap-2 text-sm text-[#9CA3AF]">
+              <a href="mailto:hello@studyzone.dev" className="inline-flex items-center gap-2 hover:text-[#0084FF] transition-colors duration-150">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4 shrink-0">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                 </svg>
                 hello@studyzone.dev
               </a>
-              <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-cyan-400 transition-colors duration-150">
+              <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-[#0084FF] transition-colors duration-150">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4 shrink-0">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
                 </svg>
@@ -99,18 +91,17 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Nav columns */}
           {Object.entries(navLinks).map(([category, links]) => (
             <div key={category}>
-              <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-500">
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#9CA3AF]/60">
                 {category}
               </h3>
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-slate-400 hover:text-white transition-colors duration-150"
+                      className="text-sm text-[#9CA3AF] hover:text-white transition-colors duration-150"
                     >
                       {link.label}
                     </Link>
@@ -120,9 +111,8 @@ export default function Footer() {
             </div>
           ))}
 
-          {/* Socials Column (Right of Company) */}
           <div>
-            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-500">
+            <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#9CA3AF]/60">
               Follow Us
             </h3>
             <div className="flex flex-wrap gap-3">
@@ -133,7 +123,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/40 text-slate-400 hover:border-indigo-500/40 hover:bg-indigo-500/10 hover:text-indigo-400 transition-all duration-150"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#9CA3AF] hover:border-[#0084FF]/40 hover:bg-[#0084FF]/10 hover:text-[#0084FF] transition-all duration-150"
                 >
                   {s.icon}
                 </a>
@@ -142,12 +132,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-900 py-6 sm:flex-row">
-          <p className="text-xs text-slate-500">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/5 py-6 sm:flex-row">
+          <p className="text-xs text-[#9CA3AF]/60">
             &copy; {year} StudyZone. All rights reserved.
           </p>
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-[#9CA3AF]/60">
             Built with ❤️ for students everywhere.
           </p>
         </div>
