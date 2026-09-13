@@ -1,4 +1,4 @@
-# StudyZone
+# StudyZone - Peer-to-Peer Learning Platform
 
 > A modern, peer-to-peer learning platform where students share, discover, and organize academic resources — beautifully.
 
